@@ -1,0 +1,20 @@
+afficher:-
+	
+	see("copier.txt"),
+	outm("++++++++++++++++++++++++++++++++++++++++++++"),line,
+	outm("+ Liste de vos phrases:                    +"),line,
+	outm("++++++++++++++++++++++++++++++++++++++++++++"),line,
+	boucleLR,
+	outm("++++++++++++++++++++++++++++++++++++++++++++"),line,
+	seen.
+
+	boucleLR:- eof,!.
+
+	boucleLR:-
+	inl(C),
+	outm("--------------------------------------------"),line,
+	outm("- "),
+	outm(C),line,
+	boucleLR.
+
+	

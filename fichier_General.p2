@@ -1,0 +1,16 @@
+/* A l'aide de ce fichier on peut appeler tous les autres fichiers*/
+
+
+:-reconsult("ensg.p2").
+:-reconsult("essaie.p2").
+:-reconsult("menu.p2").
+:-reconsult("jeu.p2").
+:-reconsult("afficher.p2").
+:-reconsult("etape.p2.p2").
+:-reconsult("elev.p2").
+
+
+
+
+
+

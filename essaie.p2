@@ -1,0 +1,394 @@
+/********************************  Dico  ***************************************/
+/********************************  Liste des determinants **********************/
+lexique("le","D","le").
+lexique("les","D","les").
+lexique("la","D","la").
+lexique("un","D","un").
+lexique("une","D","une").
+lexique("des","D","des").
+lexique("ce","D","ce").
+lexique("cet","D","cet").
+lexique("cette","D","cette").
+lexique("ces","D","ces").
+lexique("notre","D","notre").
+lexique("votre","D","votre").
+lexique("leur","D","leur").
+lexique("nos","D","nos").
+lexique("vos","D","vos").
+lexique("leurs","D","leurs").
+lexique("deux","D","deux").
+lexique("trois","D","trois").
+
+/********************************  Liste des Nom    **********************/
+lexique("je","N","je").
+lexique("tu","N","tu").
+lexique("il","N","il").
+lexique("elle","N","elle").
+lexique("nous","N","nous").
+lexique("vous","N","vous").
+lexique("ils","N","ils").
+lexique("elles","N","elles").
+lexique("bois","N","bois").
+lexique("journée","N","journée").
+lexique("an","N","an").
+lexique("lumière","N","lumière").
+lexique("mer","N","mer").
+lexique("yeux","N","yeux").
+lexique("enfant","N","enfants").
+lexique("bras","N","bras").
+lexique("maître","N","maître").
+lexique("couleur","N","couleur").
+lexique("porte","N","porte").
+lexique("maison","N","maison").
+lexique("train","N","train").
+lexique("garçon","N","garçon").
+lexique("fille","N","fille").
+lexique("maison","N","maison").
+lexique("lait","N","lait").
+
+/********************************  Liste V.auxliere **********************/
+lexique("ai","A","avoir").
+lexique("as","A","avoir").
+lexique("a","A","avoir").
+lexique("avons","A","avoir").
+lexique("avez","A","avoir").
+lexique("ont","A","avoir").
+
+lexique("suis","A","être").
+lexique("es","A","être").
+lexique("est","A","être").
+lexique("sommes","A","être").
+lexique("etes","A","être").
+lexique("sont","A","être").
+
+/********************************  Liste Verbes **********************/
+lexique("tombé","V","tomber").
+lexique("sauté","V","sauter").
+lexique("roulé","V","rouler").
+lexique("mangé","V","manger").
+lexique("aimé","V","aimer").
+lexique("joué","V","jouer").
+lexique("chanté","V","chanter").
+lexique("dansé","V","danser").
+lexique("bu","V","boire").
+lexique("venu","V","venir").
+lexique("marché","V","marcher").
+
+
+/******************************** Ajouter ***************************************/
+ajout(X,[],[X]).
+ajout(X,[Y|L1],[Y|L2]):- 
+ajout(X,L1,L2).
+
+/******************************** Dernier ***************************************/
+dernier([X],X).		
+dernier([X|L],Y):-	
+		dernier(L,Y).
+/******************************** CONCAT ***************************************/
+concat([],L,L).
+concat([X|L1],L2,[X|L3]):-
+			concat(L1,L2,L3).
+/******************************** MEMBRE ***************************************/
+membre(X,[X|_]):-!.
+membre(X,[_|L]):-
+		membre(X,L).
+/******************************** ETAT INITIAL ***************************************/
+initial(q0).
+/******************************** ETAT FINAL *****************************************/
+final(q1).
+final(q2).
+final(q3).
+
+/********************************* Definition ****************************************/
+sep(S):-membre(S,[" ",".",",","!","?",":",";",",","(",")"]).
+car(C):-not(sep(C)).
+
+/******************************** ETAT TRANSITION ***********************************/
+arc(q0,C,C,q1):-
+		car(C).
+arc(q0,S,"",q2):-
+		sep(S).
+
+
+arc(q1,C,C,q1):-
+		car(C).
+arc(q1,S,"\n",q2):-
+		sep(S).
+
+
+arc(q2,S,"",q2):-
+		sep(S).
+arc(q2,C,C,q1):-
+		car(C).
+
+/******************************** FONCTION RECONNAITRE *****************************/
+reconnaitre(Etatf,[],LCourant,LTokens):-
+					final(Etatf),
+					LTokens=LCourant.					
+
+
+reconnaitre(Etat,[C|L],LCourant,LTokens):-
+					arc(Etat,C,Etiq,EtatSuivant),
+					ecrire(Etiq,LCourant,NLCourant),
+					reconnaitre(EtatSuivant,L,NLCourant,LTokens).
+
+/********************************* Predicat Ecrire *********************************/
+
+ecrire("",NLCourant,NLCourant):-!.
+ecrire("\n",LCourant,NLCourant):-
+				!,
+				concat(LCourant,[""],NLCourant).
+
+ecrire(C,LCourant,NLCourant):-
+				dernier(LCourant,D),
+				conc_string(D,C,DC),
+				concat(LD,[D],LCourant),
+				concat(LD,[DC],NLCourant).
+
+/************************************** Tokenise ************************************/
+token:-
+		outm("- Taper votre phrase: "),
+		clear_input,
+		inl(S),
+		split(S,LS),
+		initial(Q0),
+		reconnaitre(Q0,LS,[""],Tok),		
+		fichierlig(Tok),
+		outm("- Le Traitement Token est terminé \n").
+
+
+/********************************* TRAITEMENT DE FICHIER ****************************/
+
+
+fichierlig(Tok):-
+	/*   Ouverture de fichier  */
+	tell("fiche.txt"),
+	/*   Lecture des lignes    */
+	boucle(Tok),
+	/*   Fermeture de fichier  */
+	told.
+
+boucle([]):-
+	!.
+
+boucle([X|L]):-
+			
+		outm(X),
+		outm("\n"),
+		boucle(L).
+
+
+
+
+/********************** Sauvgarder les phrases  *******************/
+
+traiter:-   
+	 see("fiche.txt"),
+	 boucleL, 
+	 copierL,
+	 sauvL,
+	 outm ("- La Phrase est bien enregistre\n"),
+	 seen.
+
+boucleL:- eof,!.
+
+boucleL:- inl(X),
+	  copier(X),
+	  sauv(X),
+	  boucleL.
+
+
+/****** Retourne a la ligne  *****/
+copierL:-  	
+ 	   
+	/*   Ouverture de fichier  */
+	tell("copier.txt+"),
+	/*   retourne à la ligne    */
+	outm("\n"),
+	told.
+
+/******** Copier la phrase saisir par l'enseignant ********/
+copier(X):-  	
+ 	   
+/********   Ouverture de fichier  ********/
+	tell("copier.txt+"),
+/********   ecriture des lignes  ********/
+	
+	outm(X),
+	outm(" "),
+	told.
+
+
+
+/****** Retourne a la ligne  *****/
+sauvL:-  	
+ 	   
+	/*   Ouverture de fichier  */
+	tell("inf.txt+"),
+	/*   retourne à la ligne    */
+	outm("\n"),
+	told.
+
+
+
+sauv(X):-  	
+ 	   
+/*********   Ouverture de fichier  ********/
+	tell("inf.txt+"),
+/*********   ecriture des lignes   ********/
+	ver(X),
+	outm(" "),
+	/*   Fermeture de fichier  */
+	told.
+
+/********* Ecrire la phrase sous forme infinitive ***********/
+ver(X):-
+	
+	lexique(X,"V",Lemme),
+	outm("["),
+	outm(Lemme),
+	outm("]").
+ver(X):-
+	lexique(X,"A",_).
+ver(X):-
+	 lexique(X,Cat,_),not(Cat="A"),outm(X).
+
+
+/*******************************************************************************************************/
+/********************************** Convertir une phrase de chaine à liste *****************************/				
+/*******************************************************************************************************/
+
+conv(L):- 
+	 see("fiche.txt"),
+	 boucleL([],L),
+	 outm("**********************************"),line,
+         outm("* Voici la FORME de votre phrase *"),line,
+	 outm("**********************************"),line,
+	 seen.
+
+boucleL(L,L):- eof,!.
+
+boucleL(L1,L3):- inl(X),
+	  ajout(X,L1,L2),
+          boucleL(L2,L3).
+
+
+/*********************************************************************************/
+/********************************** Analyse Genaral ******************************/
+/*********************************************************************************/
+
+
+analyse:-
+	token,
+	conv(L2),	
+	shiftreduce(L2,[],["PH"]), !,
+	traiter.	
+
+analyse:-
+	outm("- Verifiez la forme de Votre phrase").
+
+
+/********************************************************************************/
+/********************************** shiftreduc **********************************/
+/********************************************************************************/	
+
+
+shiftreduce([],L,L).
+shiftreduce(LE,LC,LF):-
+	shift(LE,LC,NLE,NLC),
+	reduce(NLC,NLCR),
+	shiftreduce(NLE,NLCR,LF).
+
+/* prédicat SHIFT/4 - (i,i,o,o) */
+shift([X|L1],L2,L1,[X|L2]).
+
+/* prédicat REDUCE/2 - (i,o) */
+reduce(L1,L2):-
+	reduction(L1,L3),
+	reduce(L3,L2).
+reduce(L,L).
+
+
+/* Predicat Redution/4 -(i,o)*/
+/* Reduire la liste d'entree en appliquant UNE regle de G */
+
+	reduction([X|L],["D"|L]):- lexique(X,"D",_).
+	reduction([X|L],["A"|L]):- lexique(X,"A",_).
+	reduction([X|L],["N"|L]):- lexique(X,"N",_).
+	reduction([X|L],["V"|L]):- lexique(X,"V",_).
+
+
+/***********************************************************************************/
+/*************************************** Forme *************************************/
+/***********************************************************************************/
+
+
+/*SV-->V*/
+	reduction(["V","A"|L1],["SV"|L]):-
+	outm("* SV--> A V                      *\n").
+
+	
+/*Forme1 :SN--> D N */ 
+	reduction(["N","D"|L1],["SN"|L]):-
+	outm("* SN--> D N                      *\n").
+
+/*Forme2 :SN--> N */ 
+	
+	reduction(["N"|L1],["SN"|L]):-
+	outm("* SN-->   N                      *\n").
+
+
+/* PH--> SN SV */
+		
+	reduction(["SV","SN"|L1],["PH"|L]):-
+	outm("* PH--> SN SV                    *\n"),
+	outm("**********************************"),line.
+
+
+
+
+/********************************************************************************/
+/***************************** Program Principale *******************************/
+/********************************************************************************/
+
+
+
+direct(A):-
+	A="2",!.
+
+
+direct(A):-
+	A="1",!,
+	analyse,
+	outm("---------------------------------------------"),line,
+	outm("-     + Taper des autres phrases +          -"),line,
+	outm("---------------------------------------------"),line,line,
+	program.
+
+program:-
+	
+	outm("---------------------------------------------"),line,
+	outm("-     + 1-Sauvgarder des phrases            -"),line,
+	outm("---------------------------------------------"),line,
+	outm("-     + 2-Sortir                            -"),line,
+	outm("---------------------------------------------"),line,
+	outm("- Saisir Votre choix SVP              "),line,
+	outm("- Choix: "),
+	clear_input,
+	inl(A),
+	direct(A).
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+

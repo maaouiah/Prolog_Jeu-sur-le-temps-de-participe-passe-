@@ -1,0 +1,38 @@
+saisir(X):-
+	outm("--------------------------------------------"),line,
+	outm("-         + Saisir Votre choix SVP +       -"),line,
+	clear_input,
+	inl(X).
+
+
+menu:-
+	
+	outm("--------------------------------------------"),line,
+	outm("-           -- Menu Géneral --             -"),line,
+	outm("-                                          -"),line,
+	outm("-               1-ETUDIANT(E)              -"),line,
+	outm("-                                          -"),line,
+	outm("-               2-ENSEIGNANT(E)            -"),line,
+	outm("-                                          -"),line,
+	outm("-               0-SORTIR                   -"),line,
+	outm("--------------------------------------------"),line,
+
+
+	saisir(X),
+	redirection(X).
+
+redirection(X):-
+	X="0",!.
+
+redirection(X):-
+	X="1",!,
+	con_elev,
+	menu.
+	
+
+redirection(X):-
+	X="2",!,
+	enseignant.
+
+redirection(X):- !.
+

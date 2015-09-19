@@ -1,0 +1,34 @@
+etapes:-
+outm("************************************************************************"),line,
+outm("* Les Traitements appliquer sur mon application:                       *"),line,
+outm("*----------------------------------------------------------------------*"),line,
+outm("*Espace Enseignant:                                                    *"),line,
+outm("*	1- verifier le mots de passe                                   *"),line,
+outm("*	2- Entrer une phrase                                           *"),line,
+outm("*	3- verifier la forme de phrase contient Participe passé ou non *"),line,
+outm("*	4- Sauvgarder la phrase dans une fichier                       *"),line,
+outm("*	5- Transformer le verbe sous forme infinitif                   *"),line,
+outm("*	6- Sauvgarder la nouvelle phrase ( Verbe Infinitif)            *"),line,
+outm("*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*"),line,
+outm("* Pour verifier la forme de la phrase: Le fichier essaie.p2            *"),line,
+outm("*	A- Tokiniser la phrase entrer par l'enseignant                 *"),line,
+outm("*	B- Convertir la phrase à Liste                                 *"),line,
+outm("* lire la phrase tokiniser et mettre dans une liste                    *"),line,
+outm("*	C- Verivier la forme de phrase avec la fonction RDUCE_SHIFT    *"),line,
+
+outm("* Pour transformer le verbe à l'infitif:                               *"),line,
+outm("*	j'ai utiliser predicat sauv(X) qui dans le fichier essaie.p2   *"),line,
+outm("*----------------------------------------------------------------------*"),line,	
+outm("*Espace Etudiants Fichier jeu.p2                                       *"),line,
+outm("*	1- Afficher les phrases qu'ils sont sous la forme infinitive   *"),line,
+outm("*	2- Demander la reponse de l'etudiant                           *"),line,
+outm("*	3- Lire la reponse                                             *"),line,
+outm("*	4- lire la correction du    fichier copier.txt                 *"),line,
+outm("*	5- comparer la reponse par la correction                       *"),line,
+outm("*	6- Si le test vrai passer à la phrase suivante                 *"),line,
+outm("************************************************************************"),line.
+
+
+
+	
+	 

@@ -1,0 +1,64 @@
+lire_ele:-
+	outm("----------------------------"),line,
+	outm("- Merci de taper votre login"),line,
+	outm("----------------------------"),line,
+	clear_input,
+	inl(E),line,
+	tell("nom.txt"),
+	outm(E),
+	told.
+
+
+con_elev:-
+	lire_ele,
+	outm("------------------------------------"),line,
+	outm("- Merci de taper votre mots de passe" ),line,
+	outm("------------------------------------"),line,
+	clear_input,
+	inl(X),line,
+	X="prolog",!,
+	eleve.
+con_elev:-
+	outm("Merci de Verifier votre Mots Passe!"),line,
+	menu.
+
+tap(X):-
+	outm("|      --- Tapez Votre choix SVP ---       |"),line,
+	outm("|------------------------------------------|"),line,
+	outm("|------> "),
+	clear_input,
+	inl(X),line.
+
+
+eleve:-
+	
+	outm("\n|------------------------------------------|"),line,
+	outm("| - Bienvenue dans l'espace d'etudiant   - |"),line,
+	outm("|------------------------------------------|"),line,
+	outm("|                                          |"),line,
+	outm("|                                          |"),line,
+	outm("|           1-Commence la jeu              |"),line,
+	outm("|                                          |"),line,
+	outm("|                                          |"),line,
+	outm("|                                          |"),line,
+	outm("|------------------------------------------|"),line,
+	outm("|              0-Menu Géneral              |"),line,
+	outm("|------------------------------------------|"),line,
+
+
+	tap(X),
+	choix_el(X).
+
+choix_el(X):-
+	X="0",!,
+	menu.
+
+choix_el(X):-
+	X="1",!,
+	jouer.
+
+	
+
+
+
+

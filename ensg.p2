@@ -1,0 +1,74 @@
+lire_nom:-
+	outm("----------------------------"),line,
+	outm("- Merci de taper votre login"),line,
+	outm("----------------------------"),line,
+	clear_input,
+	inl(E),line,
+	tell("nom.txt"),
+	outm(E),
+	told.
+
+
+connexion:-
+	lire_nom,
+	outm("------------------------------------"),line,
+	outm("- Merci de taper votre mots de passe" ),line,
+	outm("------------------------------------"),line,
+	clear_input,
+	inl(X),line,
+	X="admin",!,
+	enseignant.
+connexion:-
+	outm("Merci de Verifier votre Mots Passe!"),line,
+	menu.
+
+tap_choix(X):-
+	outm("|      --- Tapez Votre choix SVP ---       |"),line,
+	outm("|------------------------------------------|"),line,
+	outm("|------> "),
+	clear_input,
+	inl(X),line.
+
+
+enseignant:-
+	
+	outm("\n|------------------------------------------|"),line,
+	outm("| - Bienvenue dans l'espace d'ensignantt - |"),line,
+	outm("|------------------------------------------|"),line,
+	outm("|                                          |"),line,
+	outm("|        1- Taper Votre phrase             |"),line,
+	outm("|                                          |"),line,
+	outm("|        2- Afficher les Phrases           |"),line,
+	outm("|                                          |"),line,
+	outm("| 3- Afficher les etapes de l'application  |"),line,
+	outm("|                                          |"),line,
+	outm("|------------------------------------------|"),line,
+	outm("|              0-Menu Géneral              |"),line,
+	outm("|------------------------------------------|"),line,
+
+
+	tap_choix(X),
+	choix(X).
+
+choix(X):-
+	X="0",
+	menu.
+
+choix(X):-
+	X="1",!,
+	program.
+	
+
+
+choix(X):-
+	X="2",!,
+	afficher.
+choix(X):-
+	X="3",!,
+	etapes,
+	enseignant.
+
+
+
+
+

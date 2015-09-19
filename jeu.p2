@@ -1,0 +1,117 @@
+test:-
+	outm("---------------------------------------------"),line,
+	outm("-     + 1-Passer à la phrase suivante       -"),line,
+	outm("---------------------------------------------"),line,
+	outm("-     + 2-Sortir                            -"),line,
+	outm("---------------------------------------------"),line,
+	outm("- Saisir Votre choix SVP              "),line,
+	
+	outm("- Choix: "),
+	clear_input,
+	inl(R),
+	cont(R).
+
+cont(R):-
+	R="2",!.
+
+cont(R):-
+	R="1",
+	trait.
+
+
+/*************************************/
+/**** Lire le nom de l'etudiant ******/
+/*************************************/
+
+nomJ(X):-
+	 
+	 see("nom.txt"),
+	 boucle(X),
+	 seen.
+	 boucle(X):- eof,!.
+	 boucle(X):- inl(X).
+
+/**************************************/
+/****** lire la phrase conjugué *******/
+/**************************************/
+
+
+v_conj(C,Cpt):- 
+	see("copier.txt"),
+	boucleLR(C,1,Cpt), 
+	seen.
+boucleLR(_,_,_):- eof,!.
+	boucleLR(C,Cpt,Cpt):-
+	inl(C),!.
+	boucleLR(C,Cp,Cpt):-
+	inl(C2),
+	Cp2 is Cp+1,
+	boucleLR(C,Cp2,Cpt).
+
+/****************************************/
+/****** lire la phrase infinitive *******/
+/****************************************/
+
+
+v_infi(X,Cpt):- 
+	see("inf.txt"),
+	boucleL(X,1,Cpt), 
+	seen.
+boucleL(_,_,_):- eof,!.
+	boucleL(X,Cpt,Cpt):-
+	inl(X),!.
+	boucleL(X,Cp,Cpt):-
+	inl(X2),
+	Cp2 is Cp+1,
+	boucleL(X,Cp2,Cpt).
+
+
+/****************************************************/	
+/**************** Traitement de jeu *****************/
+/****************************************************/	
+
+jouer:-
+	outm("--------------------------------------------"),line,
+	nomJ(Nom),
+	outm("--          Bonjour Mr/Mdm: "),outm(Nom),outm("       --"),line,
+	outm("--------------------------------------------"),line,
+	outm("--        Conjuguer le [Verbe] au P.P     --"),line,
+	outm("--------------------------------------------"),line,
+	outm("--TAPER VOTRE REPONSE AVEC ESPACE A LA FIN--"),line,
+	outm("--------------------------------------------"),line,
+	asserta(cpt(1)),
+	traita,
+	retractall(cpt(_)).
+
+traita:-	
+	cpt(Cpt), 
+	v_infi(X,Cpt),
+	v_conj(C,Cpt),
+	Cpt2 is Cpt+1,
+	retractall(cpt(_)),
+	asserta(cpt(Cpt2)),
+	verif(X,C).
+
+/*********************************************************************/
+/****** Tester la reponse de l'etudiant avec la phrase conjugué ******/
+/*********************************************************************/
+
+verif(X,C):-
+	outm("+ Phrase: "),	
+	outm(X),line,line,
+	outm("+ Taper Votre Reponse: "),
+	clear_input,
+	inl(Y),
+	Y=:=C,!,line,
+	outm("  ******************************************"),line,
+	outm("  * Félicitations votre réponse est juste  *"),line,
+	outm("  * Passez à la phrase suivante --->       *"),line,
+	outm("  ******************************************"),line,line,
+	traita.
+
+verif(X,C):- line,	
+	outm("--------------------------------------------"),line,
+	outm ("--          Votre réponse est fausse      --"),line,
+	outm ("--          Essayez autre fois            --"),line,
+	outm("--------------------------------------------"),line,
+	verif(X,C).
